@@ -1,0 +1,16 @@
+<% stylesheet_link_tag "menu_list" %>
+
+<html>
+  <body>
+    <p>
+      <%= @menu_str %>
+    </p>
+
+<%= render partial: 'menu_list', 
+          locals:  { current_dir: @pubdir_name_str,
+                     list_html:   @pubdir_list_html
+                   }
+%>
+
+  </body>
+</html>
