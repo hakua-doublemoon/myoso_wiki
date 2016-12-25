@@ -32,15 +32,29 @@ module MWIKI_SubMod
     return outbuf
   end #mw_fileread
   #public :mw_fileread
-  
+
+  # @param  [String] img_tag ![～](～)という文字列
+  # @return [String] なんか画像のHTML
+  # @note   機能：自分のmdに埋め込める画像のパスに変える
+  # @todo   ……作ってみたけど要らなかった。そのうち消す   
+  def mw_convert_image_tag(img_tag)
+    return view_context.image_tag(img_tag.gsub(/.*\!\[.*\]\(/, "").gsub(/\).*/, ""))
+  end
+  #public :mw_convert_image_tag
+
   # @param  [File Pointer] file 読み込みたいファイルのファイルポインタ
   # @return [String] HTML
   # @note   機能：MDファイルを読み、rdiscountを使ってHTMLに変換する。
   # @note   rdiscountの利用についてはrdiscountのライセンスに従うこと。
   # @todo   
-  def mw_file2html(file)
+  def mw_file2html(file, public_name = "public")
     outbuf = " "
     file.each_line do |labmen|
+        # 画像タグは先に作る
+        #if labmen =~ /.*\!\[.*\]\(.*\).*/ then
+        #    labmen = mw_convert_image_tag(labmen)
+        #end
+        # 出力バッファにくっつける
         outbuf = outbuf + labmen# + "  "
     end
 
@@ -120,19 +134,19 @@ module MWIKI_SubMod
   # @note   機能：
   # public_name以下のディレクトリ構成を箇条書きHTMLで書き出す。
   # @todo   
-  def mw_search_dir(data_buf, dirname, index_url, public_name)
+  def mw_search_dir(data_buf, dirname, public_name)
     Dir.glob(dirname+"*").each do |name|
-        adata = [{:name   => name.gsub(dirname, ""), 
-                  :folder => MWIKI_Contant::FOLDER_NOT,
-                  :href   => ""
+        adata = [{:name    => name.gsub(dirname, ""), 
+                  :folder  => MWIKI_Contant::FOLDER_NOT,
+                  :md_path => ""
                  }]
         if FileTest.directory?(name) then
             adata[0][:folder] = MWIKI_Contant::FOLDER_START
-            mw_search_dir(adata, name+"\/", index_url, public_name)
+            mw_search_dir(adata, name+"\/", public_name)
         else
           if name =~ /.md/ then
-            md_name = name.gsub(public_name, "").gsub("\/", ":")
-            adata[0][:href] = (index_url + md_name).gsub(" ", "%20")
+            md_path = name.gsub(public_name, "").gsub("\/", ":")
+            adata[0][:md_path] = md_path
           end
         end
         data_buf.concat(adata)

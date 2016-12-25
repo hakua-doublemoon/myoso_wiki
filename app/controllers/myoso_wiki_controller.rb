@@ -91,13 +91,8 @@ class MyosoWikiController < ApplicationController
     #                        request.original_url.gsub(request.fullpath, "")+"/index/",
     #                        @pubdir_name_str
     #                       )
-    index_uri = request.original_url+"index\/"
-    if request.fullpath =~ /.*index.*/ then
-        index_uri = request.original_url.gsub(request.fullpath, "")+"\/index\/"
-    end
     self.mw_search_dir(@pubdir_list_data, 
                        @pubdir_name_str, 
-                       index_uri,
                        @pubdir_name_str
                       )
   end
