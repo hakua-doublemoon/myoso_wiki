@@ -1,3 +1,75 @@
-// Place all the styles related to the myoso_wiki controller here.
+// Place all the styles related to the mwiki_index controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+p {
+    width: 80%;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+table th{
+    padding: 6px;
+    text-align: left;
+    vertical-align: top;
+    color: #333333;
+    background-color: #eeeeee;
+    border: 1px solid #b9b9b9;
+}
+
+table td{
+    padding: 6px;
+    background-color: #ffffff;
+    border: 1px solid #b9b9b9;
+}
+
+html,body {
+    height: 100%;
+}
+
+.mw_layout_left{ 
+    width:  25%;
+    height: 100%;
+    float:  left;
+    min-height: 100%;
+    text-align: left;
+    background: #eeeeff;
+    word-wrap:  break-word;
+    margin-right: 2ex;
+}
+
+.mw_layout_right{ 
+    float:  left; 
+    width:   70%;
+    height: 100%;
+}
+
+body > .mw_layout_left {
+    height: auto;
+}
+
+//http://o-ands.net/blockquote-css-design-temple/
+
+blockquote{
+    background-color :#f0f0f0;
+    padding          :1em 1em 1em 3em;
+    position         :relative;
+}
+
+blockquote blockquote{
+    background-color :#d8d8d8;
+    padding          :1em 1em 1em 3em;
+    position         :relative;
+}
+
+blockquote:before{
+    content     :"“";
+    font-size   :600%;
+    line-height :1em;
+    font-family :"MS Sans Serif";
+    color       :#9a9;
+    position    :absolute;
+    left:0;
+    top:0;
+}

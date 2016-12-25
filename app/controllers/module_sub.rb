@@ -1,33 +1,27 @@
 #! ruby -Ku
 # -*- mode:ruby; coding:utf-8 -*-
 
+# This is released under the MIT License, see "LICENSE".
+
 #require 'rdiscount'
 # Use rdiscount to Markdown
 # The core Discount C sources are Copyright (C) 2007 David Loren Parsons.
 # The Discount Ruby extension sources are Copyright (C) 2008 Ryan Tomayko.
 # https://github.com/davidfstr/rdiscount/blob/master/COPYING
 
-class DirFile
-  attr_accessor :next_dir
-  attr_accessor :head_child_dir
-  attr_accessor :next_child_dir
-  attr_accessor :name
-  attr_accessor :files
-
-  def initialize()
-    @next_dir = nil
-    @head_child_dir = nil
-    @next_child_dir = nil
-    @name  = ""
-    @files = []
-  end
-
+module MWIKI_Contant
+  # 定数定義してみる。constant.rbはどこ？
+  FOLDER_NOT   = 0
+  FOLDER_START = 1
+  FOLDER_END   = 2
 end
 
 module MWIKI_SubMod
 
-  public
-
+  # @param  [String] file 読み込みたいファイルのパス
+  # @return [String] ファイルの中身（改行は<br>で置換してつなげてある）
+  # @note   今は使われていない
+  # @todo   そのうち消す
   def mw_fileread(file)
     outbuf = " "
     #File.open(f_name) do |file|
@@ -37,9 +31,14 @@ module MWIKI_SubMod
     #end
     return outbuf
   end #mw_fileread
-  public :mw_fileread
+  #public :mw_fileread
   
-  def file2html(file)
+  # @param  [File Pointer] file 読み込みたいファイルのファイルポインタ
+  # @return [String] HTML
+  # @note   機能：MDファイルを読み、rdiscountを使ってHTMLに変換する。
+  # @note   rdiscountの利用についてはrdiscountのライセンスに従うこと。
+  # @todo   
+  def mw_file2html(file)
     outbuf = " "
     file.each_line do |labmen|
         outbuf = outbuf + labmen# + "  "
@@ -48,34 +47,53 @@ module MWIKI_SubMod
     markdown = RDiscount.new(outbuf)
     return markdown.to_html
   end
-  public :file2html
-  
-  def parse_home_uri
+  public :mw_file2html
+
+  # @param  [nil] 
+  # @return [String] uriのfilename部分
+  # @note   機能：
+  # URIの:filename部分を抽出する。
+  # :filename部分がない場合は"welcome"を返す。
+  # @todo    
+  def mw_parse_home_uri
     #uri = request.fullpath
     uri = params[:filename]
     if (uri.nil? || uri.empty?) then
         return "welcome"
     end
     #return uri.gsub(/\/home\//, "\/")
-    return uri
+    return uri.gsub(/:/, "\/")
   end
-  public :parse_home_uri
+  #public :mw_parse_home_uri
 
-  def get_filepath
+  # @param  [nil] 
+  # @return [String] uriのfilename部分。セミコロンはスラッシュに置換される。
+  # @note   機能：
+  # URIの:filename部分を抽出する。
+  # :filename部分がない場合は"nopage"を返す。
+  # @todo
+  def mw_get_filepath()
     uri = params[:filename]
     if (uri.nil? || uri.empty?) then
         return "nopage"
     end
     return uri.gsub(/:/, "\/")
   end
-  public :get_filepath
-  
-  def search_dir_html(html_buf, dirname, index_url, public_name)
+  public :mw_get_filepath
+
+  # @param  [String] html_buf    ディレクトリ構成を<ul>で箇条書きしたHTML
+  # @param  [String] dirname     走査するディレクトリ名
+  # @param  [String] index_url   URIのホスト名を除いて"index"をつけた部分。ちゃんとした説明はあとで考える……
+  # @return [String] public_name 走査するディレクトリの一番上位
+  # @note   機能：
+  # public_name以下のディレクトリ構成を箇条書きHTMLで書き出す。
+  # @todo   controllerでHTMLをごりごり作るのは格好悪いのでそのうちどうにかする。
+  def mw_search_dir_html(html_buf, dirname, index_url, public_name)
     html_buf << "<ul class=\"dir_list\">"
     Dir.glob(dirname+"*").each do |name|
         if FileTest.directory?(name) then
             html_buf << "<li>#{name.gsub(dirname, "")}</li>"
-            search_dir_html(html_buf, name+"\/", index_url, public_name)
+            mw_search_dir_html(html_buf, name+"\/", index_url, public_name)
         else
           if name =~ /.md/ then
             md_name = name.gsub(public_name, "").gsub("\/", ":")
@@ -93,7 +111,35 @@ module MWIKI_SubMod
     end
     html_buf << "</ul>"
   end
-  public :search_dir_html
+  public :mw_search_dir_html
+
+  # @param  [String] html_buf    ディレクトリ構成を<ul>で箇条書きしたHTML
+  # @param  [String] dirname     走査するディレクトリ名
+  # @param  [String] index_url   URIのホスト名を除いて"index"をつけた部分。ちゃんとした説明はあとで考える……
+  # @return [String] public_name 走査するディレクトリの一番上位
+  # @note   機能：
+  # public_name以下のディレクトリ構成を箇条書きHTMLで書き出す。
+  # @todo   
+  def mw_search_dir(data_buf, dirname, index_url, public_name)
+    Dir.glob(dirname+"*").each do |name|
+        adata = [{:name   => name.gsub(dirname, ""), 
+                  :folder => MWIKI_Contant::FOLDER_NOT,
+                  :href   => ""
+                 }]
+        if FileTest.directory?(name) then
+            adata[0][:folder] = MWIKI_Contant::FOLDER_START
+            mw_search_dir(adata, name+"\/", index_url, public_name)
+        else
+          if name =~ /.md/ then
+            md_name = name.gsub(public_name, "").gsub("\/", ":")
+            adata[0][:href] = (index_url + md_name).gsub(" ", "%20")
+          end
+        end
+        data_buf.concat(adata)
+    end
+    data_buf.last[:folder] = MWIKI_Contant::FOLDER_END
+  end
+  public :mw_search_dir
   
   private
   

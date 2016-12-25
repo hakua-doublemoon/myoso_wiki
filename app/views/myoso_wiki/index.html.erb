@@ -1,2 +1,13 @@
-<!-- no plan -->
+  <div class="mw_layout_left">
+  	<!--% MyosoWikiController::menu %-->
+    <%= render :action  => "menu",
+               :partial => "layouts/menu" 
+    %>
+  </div>
+  <div class="mw_layout_right">
+  	<!--% MyosoWikiController.main %-->
+    <%= render :action  => "main",
+               :partial => "layouts/main" 
+    %>
+  </div>
 

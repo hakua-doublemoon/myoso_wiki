@@ -2,15 +2,13 @@ Rails.application.routes.draw do
 
   #get 'myoso_wiki/home'
   root :to => 'myoso_wiki#home'
-  get 'home/home_menu' => 'myoso_wiki#menu'
-  get 'home/home_main' => 'myoso_wiki#home_main'
 
-  #get 'myoso_wiki/index'
+  get 'myoso_wiki/index'
   get 'index' => 'myoso_wiki#index'
   get 'index/:filename' => 'myoso_wiki#index'
 
-  get 'index/myoso_wiki/menu' => 'myoso_wiki#menu'
-  get 'index/myoso_wiki/main/:filename' => 'myoso_wiki#main'
+  #get 'index/myoso_wiki/menu' => 'myoso_wiki#menu'
+  #get 'index/myoso_wiki/main/:filename' => 'myoso_wiki#main'
 
   get 'myoso_wiki/menu'
 

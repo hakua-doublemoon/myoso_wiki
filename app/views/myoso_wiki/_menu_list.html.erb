@@ -2,7 +2,21 @@
 	<%= current_dir %>
 </p>
 
-
-<%== list_html %> 
-
-<% "ToDo: HTMLごりごり作るのはやめよう" %>
+<ul class="dir_list">
+<% list_data.each do |data| %>
+  <li>
+      <% if !data[:href].empty? then %>
+        <!-- a href=< %= data[:href] %> target="_top" -->
+        <%= link_to data[:name], "/index/#{data[:name]}" %>
+      <% else %>
+        <%= data[:name] %>
+      <% end %>
+  <% if data[:folder] == MWIKI_Contant::FOLDER_START %>
+      <ul>
+  <% end %>
+  <% if data[:folder] == MWIKI_Contant::FOLDER_END %>
+      </ul>
+  <% end %>  
+  </li>
+<% end %>
+</ul>

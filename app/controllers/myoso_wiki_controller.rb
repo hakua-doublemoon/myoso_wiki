@@ -7,7 +7,10 @@ class MyosoWikiController < ApplicationController
   include MWIKI_SubMod
 
   def home
-    render :layout => "app_home"
+    @str_uri = self.mw_parse_home_uri()
+    menu()
+    main("welcome")
+    #render :layout => "app_home"
   end
 
   def home_main
@@ -16,28 +19,32 @@ class MyosoWikiController < ApplicationController
 
   def index
     # URIの処理
-    @str_uri = self.parse_home_uri()
-
-    render :layout => "app_index"
+    @str_uri = self.mw_parse_home_uri()
+    menu()
+    main(@str_uri)
+    #render :layout => "app_index"
   end
 
 ##############################
 # main  
 ##############################
-  def main
-    mw_fileio()
+  def main(str_uri)
+    mw_fileio(str_uri)
     #render :layout => "func"
   end
 
-  def mw_fileio
+  def mw_fileio(str_uri=nil)
     begin
       # URIから読むファイルを決める
       # uri = "http://" + ENV['HTTP_HOST'] + ENV['REQUEST_URI']
-      @str_uri = params[:filename]
+      if str_uri.nil? then
+          @str_uri = params[:filename]
+      end
     
       # ファイルの所在を確認
       @str_find = "なかった"
-      filepath = self.get_filepath()
+      #filepath = self.mw_get_filepath()
+      filepath = str_uri
         
       if !File.exist?("public/#{filepath}.md") then
           raise " ていうかなかった。"
@@ -47,15 +54,16 @@ class MyosoWikiController < ApplicationController
       
       # ファイル読み込み
       #@filebuf_html = "<p> [begin] <br>" + self.mw_fileread(fp) + "<br> [end] </p>"
-      @filebuf_html = "<!--HR size=\"5\"-->" + 
-                      self.file2html(fp) + 
-                      "<!--HR size=\"5\"-->"
+      @filebuf_html = "<!--HR size=\"5\"-->  " + 
+                      self.mw_file2html(fp) + 
+                      "<!--HR size=\"5\"-->  "
       
       #render :locals => {:filebuf_html => local_filebuf
       #                  }
       
     rescue => e
-      render :text => "なんか起きた。" + e.message
+      @filebuf_html = "なんか起きた。" + e.message
+      #ToDo: retryさせてもいいけどとりあえずデバッグ目的でこのままにしておく
       #@str_find = "なんか起きた: " + e.message
     
     ensure
@@ -68,20 +76,30 @@ class MyosoWikiController < ApplicationController
 ##############################
   def menu
 
-    @menu_str = "めにゅー"
+    @menu_str = "めにゅー"# + #{request.fullpath}"
 
-    menu_list()
+    mw_menu_list()
 
   end
   
-  def menu_list
+  def mw_menu_list
     @pubdir_name_str  = "public\/"
     @pubdir_list_html = ""
-    self.search_dir_html(@pubdir_list_html, 
-                         @pubdir_name_str, 
-                         request.original_url.gsub(request.fullpath, "")+"/index/",
-                         @pubdir_name_str
-                        )
+    @pubdir_list_data = []
+    #self.mw_search_dir_html(@pubdir_list_html, 
+    #                        @pubdir_name_str, 
+    #                        request.original_url.gsub(request.fullpath, "")+"/index/",
+    #                        @pubdir_name_str
+    #                       )
+    index_uri = request.original_url+"index\/"
+    if request.fullpath =~ /.*index.*/ then
+        index_uri = request.original_url.gsub(request.fullpath, "")+"\/index\/"
+    end
+    self.mw_search_dir(@pubdir_list_data, 
+                       @pubdir_name_str, 
+                       index_uri,
+                       @pubdir_name_str
+                      )
   end
   
 end
