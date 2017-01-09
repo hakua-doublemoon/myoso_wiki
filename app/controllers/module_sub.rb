@@ -46,20 +46,16 @@ module MWIKI_SubMod
   # @return [String] HTML
   # @note   機能：MDファイルを読み、rdiscountを使ってHTMLに変換する。
   # @note   rdiscountの利用についてはrdiscountのライセンスに従うこと。
-  # @todo   
+  # @todo   rdiscountいらなくなったのでそのうち削る
   def mw_file2html(file, public_name = "public")
     outbuf = " "
     file.each_line do |labmen|
-        # 画像タグは先に作る
-        #if labmen =~ /.*\!\[.*\]\(.*\).*/ then
-        #    labmen = mw_convert_image_tag(labmen)
-        #end
-        # 出力バッファにくっつける
-        outbuf = outbuf + labmen# + "  "
+        outbuf << labmen# + "  "
     end
 
-    markdown = RDiscount.new(outbuf)
-    return markdown.to_html
+    #markdown = RDiscount.new(outbuf)
+    #return markdown.to_html
+    return outbuf
   end
   public :mw_file2html
 
@@ -76,7 +72,7 @@ module MWIKI_SubMod
         return "welcome"
     end
     #return uri.gsub(/\/home\//, "\/")
-    return uri.gsub(/:/, "\/")
+    return uri.gsub(/:/, "\/").gsub("\.md", "")
   end
   #public :mw_parse_home_uri
 

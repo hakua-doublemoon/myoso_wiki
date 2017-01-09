@@ -1,19 +1,4 @@
-<% stylesheet_link_tag "menu_list" %>
+<% "たぶんこれは普段使わないけどデバッグの時は使えるのでまだ消さない"  %>
 
-<html>
-  <body>
 
-    <p>
-      <%= @menu_str %>
-    </p>
-
-<%= render partial: 'menu_list', 
-           locals:  { current_dir: @pubdir_name_str,
-                      list_html:   @pubdir_list_html,
-                      list_data:   @pubdir_list_data
-                    }
-%>
-<%= p @pubdir_list_data %>
-
-  </body>
-</html>
+<%= render partial: 'layouts/menu' %>

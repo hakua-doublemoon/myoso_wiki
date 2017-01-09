@@ -18,6 +18,11 @@ class MyosoWikiController < ApplicationController
   end
 
   def index
+    #@value = params[:id]
+    #respond_to do |format|
+    #  format.js
+    #end
+
     # URIの処理
     @str_uri = self.mw_parse_home_uri()
     menu()
@@ -28,17 +33,22 @@ class MyosoWikiController < ApplicationController
 ##############################
 # main  
 ##############################
-  def main(str_uri)
-    mw_fileio(str_uri)
+  def main(str_uri=nil)
+    mw_fileio_main(str_uri, false)
     #render :layout => "func"
   end
 
-  def mw_fileio(str_uri=nil)
+  def mw_fileio()
+    mw_fileio_main(nil, params[:ajax_request])
+  end
+
+  def mw_fileio_main(str_uri, ajax_request)
     begin
-      # URIから読むファイルを決める
-      # uri = "http://" + ENV['HTTP_HOST'] + ENV['REQUEST_URI']
       if str_uri.nil? then
-          @str_uri = params[:filename]
+          str_uri = self.mw_parse_home_uri()
+          if str_uri.nil? then
+              str_uri = "nopage"
+          end
       end
     
       # ファイルの所在を確認
@@ -60,14 +70,16 @@ class MyosoWikiController < ApplicationController
       
       #render :locals => {:filebuf_html => local_filebuf
       #                  }
-      
+      fp.close()
+
     rescue => e
-      @filebuf_html = "なんか起きた。" + e.message
+      @filebuf_html = "なんか起きた。" + e.message + " file: #{filepath}"
       #ToDo: retryさせてもいいけどとりあえずデバッグ目的でこのままにしておく
       #@str_find = "なんか起きた: " + e.message
     
     ensure
       @origin_path = "here is " + File.expand_path(File.dirname($0));    # for view
+      
     end
   end #test_fileio
 

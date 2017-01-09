@@ -1,0 +1,15 @@
+/ script
+/  test_roop();
+
+/ %p{id: "counter"}
+/   0
+
+-# MyosoWikiController::menu
+%div{class: "mw_layout_left"}
+  = render action: "menu",
+           partial: "layouts/menu"
+
+-# MyosoWikiController::main
+%div{class: "mw_layout_right"}
+  = render action:  "main",
+           partial: "layouts/main" 
