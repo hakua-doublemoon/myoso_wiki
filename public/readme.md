@@ -16,7 +16,7 @@ README.rdoc曰く
 2.1.2  
 
 #### System dependencies
-railsが動くこと？  
+railsが動くこと？
 DBとかgitは使ってません。
 
 #### Configuration  

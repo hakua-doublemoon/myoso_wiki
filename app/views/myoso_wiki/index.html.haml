@@ -4,12 +4,23 @@
 / %p{id: "counter"}
 /   0
 
--# MyosoWikiController::menu
-%div{class: "mw_layout_left"}
-  = render action: "menu",
-           partial: "layouts/menu"
+= evil_icons_sprite
 
--# MyosoWikiController::main
-%div{class: "mw_layout_right"}
-  = render action:  "main",
-           partial: "layouts/main" 
+%div{class: "mw_layout_head"}
+  Myosotis Wiki
+
+%div{class: "mw_layout_banner", id: "mw_layout_banner"}
+  = render partial: "layouts/banner"
+
+%div{class: "mw_body"}
+  -# MyosoWikiController::menu
+  %div{class: "mw_layout_left"}
+    = render action:  "menu",
+             partial: "layouts/menu"
+
+  -# MyosoWikiController::main
+  %div{class: "mw_layout_right"}
+    = render action:  "main",
+             partial: "layouts/main" 
+
+  %div{class: "mw_layout_right2"}

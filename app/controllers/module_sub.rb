@@ -3,12 +3,6 @@
 
 # This is released under the MIT License, see "LICENSE".
 
-#require 'rdiscount'
-# Use rdiscount to Markdown
-# The core Discount C sources are Copyright (C) 2007 David Loren Parsons.
-# The Discount Ruby extension sources are Copyright (C) 2008 Ryan Tomayko.
-# https://github.com/davidfstr/rdiscount/blob/master/COPYING
-
 module MWIKI_Contant
   # 定数定義してみる。constant.rbはどこ？
   FOLDER_NOT   = 0
@@ -44,18 +38,10 @@ module MWIKI_SubMod
 
   # @param  [File Pointer] file 読み込みたいファイルのファイルポインタ
   # @return [String] HTML
-  # @note   機能：MDファイルを読み、rdiscountを使ってHTMLに変換する。
-  # @note   rdiscountの利用についてはrdiscountのライセンスに従うこと。
-  # @todo   rdiscountいらなくなったのでそのうち削る
+  # @note   機能：MDファイルを読む
+  # @todo   そのうち名前変える
   def mw_file2html(file, public_name = "public")
-    outbuf = " "
-    file.each_line do |labmen|
-        outbuf << labmen# + "  "
-    end
-
-    #markdown = RDiscount.new(outbuf)
-    #return markdown.to_html
-    return outbuf
+    return file.read
   end
   public :mw_file2html
 

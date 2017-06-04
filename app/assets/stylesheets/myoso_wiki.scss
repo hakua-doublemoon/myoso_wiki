@@ -1,6 +1,20 @@
 // Place all the styles related to the mwiki_index controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Use Font "Caesar Dressing"
+// https://fonts.google.com/specimen/Caesar+Dressing?selection.family=Caesar+Dressing
+// Copyright (c) 2011, Open Window (https://profiles.google.com/openwindowfonts/about),
+// with Reserved Font Name "Caesar Dressing".
+// This Font Software is licensed under the SIL Open Font License, Version 1.1.
+// This license is copied below, and is also available with a FAQ at:
+// http://scripts.sil.org/OFL
+@import url('https://fonts.googleapis.com/css?family=Caesar+Dressing');
+
+// Use Gem "compass"
+// This lisence is written on Gemfile
+@import "compass";
+
 p {
     width: 80%;
 }
@@ -25,28 +39,79 @@ table td{
 }
 
 html,body {
+    margin:0;
     height: 100%;
 }
 
-.mw_layout_left{ 
-    width:  25%;
-    height: 100%;
-    float:  left;
+.mw_layout_head{
+    height: 40pt;
+    background-color: #f6e6b4; // Old browsers
+    @include filter-gradient(#f6e6b4, #f6e6b4, vertical); // IE6-9
+    @include background-image(linear-gradient(top, #f6e6b4 0%,#e57006 10%,#e57006 90%,#f6e6b4 100%));
+    color: #5b6356;
+    font-size: 30pt;
+    font-family: 'Caesar Dressing', cursive;
+    text-indent: 1em;
+}
+
+.mw_layout_banner{
+    height: 40pt;
+    background-color: #f6e6b4; // Old browsers
+    @include filter-gradient(#f6e6b4, #f6e6b4, vertical); // IE6-9
+    @include background-image(linear-gradient(top, #f6e6b4 0%,#e57006 10%,#e57006 90%,#f6e6b4 100%));
+    color: #ffffff;
+    font-size: 30pt;
+    text-indent: 1em;
+}
+
+.mw_body{
+    display:    table;
+    width:      100%;
     min-height: 100%;
+    background-image: image-url("slip_2.svg"); 
+}
+
+.mw_layout_left{ 
+    display: table-cell;
+    vertical-align:top;
+    width:  25%;
+}
+
+.mw_layout_menubox{
+    position: relative;
+    top: 10%;
+    height: 100%;
+    width:  100%;
     text-align: left;
-    background: #eeeeff;
     word-wrap:  break-word;
     margin-right: 2ex;
 }
 
 .mw_layout_right{ 
-    float:  left; 
+    display:        table-cell;
+    vertical-align: top;
     width:   70%;
-    height: 100%;
+    min-height: 100%;
+    background-color: #fff; // Old browsers
 }
 
-body > .mw_layout_left {
-    height: auto;
+.mw_layout_filebuf{ 
+    margin-left: 2ex;
+    margin-right: 2ex;
+    width:  90%;    
+}
+
+.clearfix:after{
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.mw_layout_righ2{ 
+    display:        table-cell;
+    vertical-align: top;
+    width:   5%;
+    min-height: 100%;
 }
 
 img {

@@ -1,26 +1,31 @@
-<p>
-	<%= current_dir %>
-</p>
+<div class="mw_layout_menubox">
 
 <ul class="dir_list">
+<%= current_dir %>
 <% list_data.each do |data| %>
   <li>
-      <% if !data[:md_path].empty? then %>
-        <%= link_to data[:name], 
-            myoso_wiki_mw_fileio_path(:filename     => data[:md_path],
-                                      :ajax_request => true
-                                     ), 
-            :remote => true
-        %>
-      <% else %>
-        <%= data[:name] %>
-      <% end %>
-  <% if data[:folder] == MWIKI_Contant::FOLDER_START %>
+      <div class="relative">
+      <%= evil_icon_call("ei-chevron-right", "small") %>
+      <div class="absolute">
+        <% if !data[:md_path].empty? then %>
+          <%= link_to data[:name], 
+              myoso_wiki_mw_fileio_path(:filename     => data[:md_path],
+                                        :ajax_request => true
+                                       ), 
+              :remote => true
+          %>
+        <% else %>
+          <%= data[:name] %>
+        <% end %>
+      </div>
+      </div>
+    <% if data[:folder] == MWIKI_Contant::FOLDER_START %>
       <ul>
-  <% end %>
-  <% if data[:folder] == MWIKI_Contant::FOLDER_END %>
+    <% end %>
+    <% if data[:folder] == MWIKI_Contant::FOLDER_END %>
       </ul>
-  <% end %>  
-  </li>
+    <% end %>  
 <% end %>
 </ul>
+
+</div>

@@ -39,7 +39,17 @@ gem 'haml-rails'
 # The core Discount C sources are Copyright (C) 2007 David Loren Parsons.
 # The Discount Ruby extension sources are Copyright (C) 2008 Ryan Tomayko.
 # https://github.com/davidfstr/rdiscount/blob/master/COPYING
-gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
+# gem 'rdiscount', '~> 2.2', '>= 2.2.0.1'
+
+# Use qiita-markdown to Markdown
+# Copyright (c) 2014 Ryo Nakamura
+# https://github.com/increments/qiita-markdown/blob/master/LICENSE.txt
+gem 'qiita-markdown'
+
+# Use github-linguist for github-linguist
+# Copyright (c) 2017 GitHub, Inc.
+# https://github.com/github/linguist/blob/master/LICENSE
+gem 'github-linguist'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -54,3 +64,12 @@ group :development do
   gem 'spring'
 end
 
+# Use compass-rails for SCSS 
+# Copyright (c) 2011 Scott Davis
+# https://github.com/Compass/compass-rails/blob/master/LICENSE
+gem 'compass-rails'
+
+# Use evil_icons to use icons
+# Copyright (c) 2014 Alexander Madyankin <alexander@madyankin.name>, Roman Shamin
+# https://github.com/evil-icons/evil-icons/blob/master/LICENSE.txt
+gem 'evil_icons'

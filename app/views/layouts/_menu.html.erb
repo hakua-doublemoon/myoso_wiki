@@ -1,15 +1,8 @@
-<!-- % stylesheet_link_tag "menu_list" % -->
-
-    <!--p>めにゅー</p-->
-
-    <p>
-      <%= @menu_str %>
-    </p>
-
 <%= render partial: 'layouts/menu_list', 
            locals:  { current_dir: @pubdir_name_str,
                       list_html:   @pubdir_list_html,
-                      list_data:   @pubdir_list_data
+                      list_data:   @pubdir_list_data,
+                      menu_head:   @menu_str
                     }
 %>
 <% p @pubdir_list_data %>

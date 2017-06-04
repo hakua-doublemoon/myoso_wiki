@@ -18,11 +18,6 @@ class MyosoWikiController < ApplicationController
   end
 
   def index
-    #@value = params[:id]
-    #respond_to do |format|
-    #  format.js
-    #end
-
     # URIの処理
     @str_uri = self.mw_parse_home_uri()
     menu()
@@ -57,17 +52,15 @@ class MyosoWikiController < ApplicationController
       filepath = str_uri
         
       if !File.exist?("public/#{filepath}.md") then
-          raise " ていうかなかった。"
+          #raise " ていうかなかった。"
+          filepath = "nopage"
       end
       @str_find = "あった"
       fp = File.open("public/#{filepath}.md")
       
       # ファイル読み込み
-      #@filebuf_html = "<p> [begin] <br>" + self.mw_fileread(fp) + "<br> [end] </p>"
-      @filebuf_html = "<!--HR size=\"5\"-->  " + 
-                      self.mw_file2html(fp) + 
-                      "<!--HR size=\"5\"-->  "
-      
+      @filebuf_html = self.mw_file2html(fp)
+
       #render :locals => {:filebuf_html => local_filebuf
       #                  }
       fp.close()
@@ -79,7 +72,13 @@ class MyosoWikiController < ApplicationController
     
     ensure
       @origin_path = "here is " + File.expand_path(File.dirname($0));    # for view
-      
+      # ファイル名を抜きだす
+      md_title_head = filepath.slice(/^.+\//)
+      if md_title_head.nil? then
+          @md_title = filepath
+      else
+          @md_title = filepath.gsub(md_title_head, "")
+      end
     end
   end #test_fileio
 

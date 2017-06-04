@@ -1,1 +1,2 @@
-$("#page_fileio_filebuf").html("#{j(render 'layouts/page_fileio2')}")
+$("#mw_layout_banner").html("#{j(   render partial: 'layouts/banner')}")
+$("#page_fileio_filebuf").html("#{j(render partial: 'layouts/page_fileio2', locals: {filebuf: @filebuf_html})}")

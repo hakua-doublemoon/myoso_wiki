@@ -1,3 +1,2 @@
-%div{id: "page_fileio_filebuf"}
-  :markdown
-    #{@filebuf_html}
+%div{id: "page_fileio_filebuf", class: "mw_layout_filebuf"}
+  = render partial: "layouts/page_fileio2", locals: {filebuf: @filebuf_html}
