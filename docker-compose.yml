@@ -1,0 +1,13 @@
+version: '2'
+services:
+  app:
+    build: .
+    environment:
+      RAILS_ENV: development
+    ports:
+      - '53002:53002'
+      - '58080:58080'
+    volumes:
+      - .:/usr/src/myoso_wiki
+    container_name: 'myosotis'
+
